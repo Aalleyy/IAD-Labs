@@ -1,27 +1,5 @@
-DROP TABLE Uses_t 		CASCADE CONSTRAINTS ;
-DROP TABLE Works_In_t 		CASCADE CONSTRAINTS ;
-DROP TABLE WORK_CENTER_t 	CASCADE CONSTRAINTS ;
-DROP TABLE Does_Business_In_t 	CASCADE CONSTRAINTS ;
-DROP TABLE Employee_Skills_t 	CASCADE CONSTRAINTS ;
-DROP TABLE SUPPLIES_t 		CASCADE CONSTRAINTS ;
-DROP TABLE Produced_In_t 	CASCADE CONSTRAINTS ;
-DROP TABLE Order_line_t 	CASCADE CONSTRAINTS ;
-DROP TABLE PRODUCT_t 		CASCADE CONSTRAINTS ;
-DROP TABLE PRODUCT_LINE_t 	CASCADE CONSTRAINTS ;
-DROP TABLE ORDER_t 		CASCADE CONSTRAINTS ;
-DROP TABLE SALESPERSON_t 	CASCADE CONSTRAINTS ;
-DROP TABLE VENDOR_t 		CASCADE CONSTRAINTS ;
-DROP TABLE SKILL_t 		CASCADE CONSTRAINTS ;
-DROP TABLE RAW_MATERIAL_t 	CASCADE CONSTRAINTS ;
-DROP TABLE TERRITORY_t 		CASCADE CONSTRAINTS ;
-DROP TABLE EMPLOYEE_t 		CASCADE CONSTRAINTS ;
-DROP TABLE CUSTOMER_t 		CASCADE CONSTRAINTS ;
-
-
-
-
 CREATE TABLE CUSTOMER_t
-             (Customer_Id         number          NOT NULL,
+             (Customer_Id         INTEGER          NOT NULL,
 	      Customer_Name       VARCHAR(25)    ,
 	      Customer_Address    VARCHAR(30)    ,
               Customer_City       VARCHAR(20)    ,              
@@ -32,15 +10,15 @@ CONSTRAINT CUSTOMER_PK PRIMARY KEY (Customer_Id));
 
 
 CREATE TABLE TERRITORY_t
-             (Territory_Id        number         NOT NULL,
+             (Territory_Id        INTEGER         NOT NULL,
               Territory_Name      VARCHAR(50)    ,
 CONSTRAINT TERRITORY_PK PRIMARY KEY (Territory_Id));
 
 
 
 CREATE TABLE Does_Business_In_t
-             (Customer_Id         number           NOT NULL,
-              Territory_Id        number           NOT NULL,
+             (Customer_Id         INTEGER           NOT NULL,
+              Territory_Id        INTEGER           NOT NULL,
 CONSTRAINT Does_Business_In_PK PRIMARY KEY (Customer_Id, Territory_Id),
 CONSTRAINT Does_Business_In_FK1 FOREIGN KEY (Customer_Id) REFERENCES CUSTOMER_t(Customer_Id),
 CONSTRAINT Does_Business_In_FK2 FOREIGN KEY (Territory_Id) REFERENCES TERRITORY_t(Territory_Id));
@@ -79,7 +57,7 @@ CONSTRAINT Employee_Skills_FK2 FOREIGN KEY (Skill_Id) REFERENCES SKILL_t(Skill_I
 
 CREATE TABLE ORDER_t
              (Order_Id            INTEGER        NOT NULL,
-	      Customer_Id         number         ,
+	      Customer_Id         INTEGER         ,
               Order_Date          DATE           ,
 CONSTRAINT ORDER_PK PRIMARY KEY (Order_Id),
 CONSTRAINT ORDER_FK1 FOREIGN KEY (Customer_Id) REFERENCES CUSTOMER_t(Customer_Id));
@@ -94,15 +72,15 @@ CONSTRAINT WORK_CENTER_PK PRIMARY KEY (Work_Center_Id));
 
 
 CREATE TABLE PRODUCT_LINE_t
-             (Product_Line_Id     number         NOT NULL,
+             (Product_Line_Id     INTEGER         NOT NULL,
               Product_Line_Name   VARCHAR(50)    ,
 CONSTRAINT PRODUCT_LINE_PK PRIMARY KEY (Product_Line_Id));
 
 
 
 CREATE TABLE PRODUCT_t
-             (Product_Id          number         NOT NULL,
-              Product_Line_Id     number         ,
+             (Product_Id          INTEGER         NOT NULL,
+              Product_Line_Id     INTEGER         ,
               Product_Description VARCHAR(50)    ,
               Product_Finish      VARCHAR(20)    ,
               Standard_Price      Decimal(6,2)   ,
@@ -112,7 +90,7 @@ CONSTRAINT PRODUCT_FK1 FOREIGN KEY (Product_Line_Id) REFERENCES PRODUCT_LINE_t(P
 
 
 CREATE TABLE Produced_In_t
-	      (Product_Id	  number	 not null,
+	      (Product_Id	  INTEGER	 not null,
               Work_Center_Id      VARCHAR(12)    NOT NULL,
 CONSTRAINT Produced_In_PK PRIMARY KEY (Product_Id, Work_Center_Id),
 CONSTRAINT Produced_In_FK1 FOREIGN KEY (Product_Id) REFERENCES PRODUCT_t(Product_Id),
@@ -123,8 +101,8 @@ CONSTRAINT Produced_In_FK2 FOREIGN KEY (Work_Center_Id) REFERENCES WORK_CENTER_t
 
 CREATE TABLE Order_line_t
 	      (Order_Id            INTEGER        NOT NULL,
-              Product_Id          number         NOT NULL,
-              Ordered_Quantity    number         ,
+              Product_Id          INTEGER         NOT NULL,
+              Ordered_Quantity    INTEGER         ,
 CONSTRAINT Order_line_PK PRIMARY KEY (Order_Id, Product_Id),
 CONSTRAINT Order_line_FK1 FOREIGN KEY (Order_Id) REFERENCES ORDER_t(Order_Id),
 CONSTRAINT Order_line_FK2 FOREIGN KEY (Product_Id) REFERENCES PRODUCT_t(Product_Id));
@@ -141,18 +119,18 @@ CONSTRAINT RAW_MATERIAL_PK PRIMARY KEY (Material_Id));
 
 
 CREATE TABLE SALESPERSON_t
-             (SalesPerson_Id      number          NOT NULL,              
+             (SalesPerson_Id      INTEGER          NOT NULL,              
               SalesPerson_Name    VARCHAR(25)    ,
               SalesPerson_phone   VARCHAR(50)    ,
               SalesPerson_Fax     VARCHAR(50)    ,
-              Territory_Id        number         ,
+              Territory_Id        INTEGER         ,
 CONSTRAINT SALESPERSON_PK PRIMARY KEY (SalesPerson_Id),
 CONSTRAINT SALESPERSON_FK1 FOREIGN KEY (Territory_Id) REFERENCES TERRITORY_t(Territory_Id));
 
 
 
 CREATE TABLE VENDOR_t
-             (Vendor_Id           number         NOT NULL,
+             (Vendor_Id           INTEGER         NOT NULL,
               Vendor_Name         VARCHAR(25)    ,
               Vendor_Address      VARCHAR(30)    ,
               Vendor_City         VARCHAR(20)    ,
@@ -166,7 +144,7 @@ CONSTRAINT VENDOR_PK PRIMARY KEY (Vendor_Id));
 
 
 CREATE TABLE SUPPLIES_t
-             (Vendor_Id           number         NOT NULL,
+             (Vendor_Id           INTEGER         NOT NULL,
               Material_Id         VARCHAR(12)    NOT NULL,
               Supply_Unit_Price   Decimal(6,2)   ,              
 CONSTRAINT SUPPLIES_PK PRIMARY KEY (Vendor_Id, Material_Id),
@@ -178,7 +156,7 @@ CONSTRAINT SUPPLIES_FK2 FOREIGN KEY (Vendor_Id) REFERENCES VENDOR_t(Vendor_Id));
 CREATE TABLE Uses_t
              (Goes_into_Quantity  INTEGER        ,
               Material_Id         VARCHAR(12)    NOT NULL,
-              Product_Id          number         NOT NULL,
+              Product_Id          INTEGER         NOT NULL,
 CONSTRAINT UsES_PK PRIMARY KEY (Product_Id, Material_Id),
 CONSTRAINT UsES_FK1 FOREIGN KEY (Product_Id) REFERENCES PRODUCT_t(Product_Id),
 CONSTRAINT UsES_FK2 FOREIGN KEY (Material_Id) REFERENCES RAW_MATERIAL_t(Material_Id));
@@ -437,45 +415,3 @@ VALUES  ('WR1', 'Warehouse and Receiving');
 
 INSERT INTO WORKS_IN_t (Employee_Id, Work_Center_Id)
 VALUES ('123-44-345', 'SM1');
-
-
-
-describe Uses_t;
-describe Works_In_t;
-describe WORK_CENTER_t;
-describe Does_Business_In_t;
-describe Employee_Skills_t;
-describe SUPPLIES_t;
-describe Produced_In_t;
-describe Order_line_t;
-describe PRODUCT_t;
-describe PRODUCT_LINE_t;
-describe ORDER_t;
-describe SALESPERSON_t;
-describe VENDOR_t;
-describe SKILL_t;
-describe RAW_MATERIAL_t;
-describe TERRITORY_t;
-describe EMPLOYEE_t;
-describe CUSTOMER_t;
-
-select * from Uses_t;
-select * from Works_In_t;
-select * from WORK_CENTER_t;
-select * from Does_Business_In_t;
-select * from Employee_Skills_t;
-select * from SUPPLIES_t;
-select * from Produced_In_t;
-select * from Order_line_t;
-select * from PRODUCT_t;
-select * from PRODUCT_LINE_t;
-select * from ORDER_t;
-select * from SALESPERSON_t;
-select * from VENDOR_t;
-select * from SKILL_t;
-select * from RAW_MATERIAL_t;
-select * from TERRITORY_t;
-select * from EMPLOYEE_t;
-select * from CUSTOMER_t;
-
-COMMIT;
